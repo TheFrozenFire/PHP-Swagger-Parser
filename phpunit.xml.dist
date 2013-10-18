@@ -3,5 +3,8 @@
         <testsuite name="ResourceListing">
             <directory>tests/ResourceListing</directory>
         </testsuite>
+        <testsuite name="ApiDeclaration">
+            <directory>test/ApiDeclaration</directory>
+        </testsuite>
     </testsuites>
 </phpunit>
