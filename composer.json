@@ -1,0 +1,21 @@
+{
+    "name": "thefrozenfire/swagger",
+    "description": "Swagger parser for PHP",
+    "authors": [
+        {
+            "name": "Justin Martin",
+            "email": "frozenfire@thefrozenfire.com"
+        }
+    ],
+    "require": {
+
+    },
+    "autoload": {
+        "psr-0": {
+            "Swagger": "src/"
+        },
+        "classmap": [
+            "tests/"
+        ]
+    }
+}
