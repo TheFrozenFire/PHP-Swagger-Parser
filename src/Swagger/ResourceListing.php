@@ -62,7 +62,7 @@ class ResourceListing {
         
         $apis = array();
         foreach($this->getDocument()->apis as $document) {
-            $apis[] = new Api($document);
+            $apis[] = static::apiFromDocument($document);
         }
         
         return $apis;
@@ -101,5 +101,9 @@ class ResourceListing {
         }
         $this->document = $document;
         return $this;
+    }
+    
+    protected static function apiFromDocument($document) {
+        return new Api($document);
     }
 }
