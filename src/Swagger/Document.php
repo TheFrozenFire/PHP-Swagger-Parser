@@ -14,7 +14,7 @@ abstract class Document {
     }
     
     public function getDocument() {
-        if(!is_object($this->document)) {
+        if(!($this->document instanceof stdClass)) {
             $this->document = new stdClass;
         }
         return $this->document;
