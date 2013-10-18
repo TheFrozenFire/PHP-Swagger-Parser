@@ -1,12 +1,10 @@
 <?php
 namespace Swagger\ResourceListing;
 
+use Swagger\Document;
 use InvalidArgumentException;
-use stdClass;
 
-class Api {
-    protected $document;
-    
+class Api extends Document {
     public function __construct($document = null) {
         if(!is_null($document)) {
             $this->setDocument($document);
@@ -34,23 +32,6 @@ class Api {
     
     public function setDescription($description) {
         $this->getDocument()->description = $description;
-        return $this;
-    }
-    
-    public function getDocument() {
-        if(!is_object($this->document)) {
-            $this->document = new stdClass;
-        }
-        return $this->document;
-    }
-    
-    public function setDocument($document) {
-        if(!($document instanceof stdClass)) {
-            throw new InvalidArgumentException(
-                'Document must be an stdClass'
-            );
-        }
-        $this->document = $document;
         return $this;
     }
 }

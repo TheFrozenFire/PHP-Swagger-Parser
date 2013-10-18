@@ -1,9 +1,10 @@
 <?php
 namespace Swagger\ApiDeclaration\Api\Operation;
 
-class ResponseMessage {
-    protected $document;
-    
+use Swagger\Document;
+use InvalidArgumentException;
+
+class ResponseMessage extends Document {
     public function getCode() {
         if(!property_exists($this->getDocument(), 'code')) {
             return null;
@@ -37,23 +38,6 @@ class ResponseMessage {
     
     public function setResponseModel($responseModel) {
         $this->getDocument()->responseModel = $responseModel;
-        return $this;
-    }
-    
-    public function getDocument() {
-        if(!is_object($this->document)) {
-            $this->document = new stdClass;
-        }
-        return $this->document;
-    }
-    
-    public function setDocument($document) {
-        if(!($document instanceof stdClass)) {
-            throw new InvalidArgumentException(
-                'Document must be an stdClass'
-            );
-        }
-        $this->document = $document;
         return $this;
     }
 }

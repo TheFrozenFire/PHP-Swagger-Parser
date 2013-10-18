@@ -2,6 +2,7 @@
 namespace Swagger;
 
 use Swagger\ApiDeclaration\Api;
+use InvalidArgumentException;
 
 class ApiDeclaration extends ResourceListing {
     public function getBasePath() {
@@ -34,8 +35,8 @@ class ApiDeclaration extends ResourceListing {
         }
         
         $models = array();
-        foreach($this->getDocument()->models as $document) {
-            $models[] = static::modelFromDocument($document);
+        foreach($this->getDocument()->models as $name => $document) {
+            $models[$name] = static::modelFromDocument($name, $document);
         }
         
         return $models;
@@ -46,9 +47,9 @@ class ApiDeclaration extends ResourceListing {
             throw new InvalidArgumentException('Parameter must be of type array');
         }
         
-        foreach($models as $key => $model) {
+        foreach($models as $model) {
             if($model instanceof Model) {
-                $models[$key] = $model->getDocument();
+                $models[$model->getName()] = $model->getDocument();
             }
         }
         
@@ -60,7 +61,7 @@ class ApiDeclaration extends ResourceListing {
         return new Api($document);
     }
     
-    protected static function modelFromDocument($document) {
-        return new Model($document);
+    protected static function modelFromDocument($name, $document) {
+        return new Model($document, $name);
     }
 }

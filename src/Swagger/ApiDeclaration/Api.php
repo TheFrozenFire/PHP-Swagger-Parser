@@ -4,6 +4,8 @@ namespace Swagger\ApiDeclaration;
 use Swagger\ResourceListing\Api as ResourceListingApi;
 use Swagger\ApiDeclaration\Api\Operation;
 
+use InvalidArgumentException;
+
 class Api extends ResourceListingApi {
     public function getOperations() {
         if(!property_exists($this->getDocument(), 'operations')) {

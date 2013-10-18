@@ -217,7 +217,6 @@ class ResourceListingTest extends TestCase {
     
     public function provideDocumentContents() {
         return array(
-            array(''),
             array('{}'),
             array(new stdClass)
         );
@@ -226,6 +225,7 @@ class ResourceListingTest extends TestCase {
     public function provideInvalidDocuments() {
         return array(
             array(array()),
+            array(array('')),
             array(array('apiVersion' => '0.1')),
             array(null),
         );

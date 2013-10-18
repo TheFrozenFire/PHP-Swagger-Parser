@@ -1,9 +1,10 @@
 <?php
 namespace Swagger\ApiDeclaration\Api\Operation;
 
-class Parameter {
-    protected $document;
-    
+use Swagger\Document;
+use InvalidArgumentException;
+
+class Parameter extends Document {
     public function getParamType() {
         if(!property_exists($this->getDocument(), 'paramType')) {
             return null;
@@ -109,23 +110,6 @@ class Parameter {
     
     public function setEnum($enum) {
         $this->getDocument()->enum = $enum;
-        return $this;
-    }
-    
-    public function getDocument() {
-        if(!is_object($this->document)) {
-            $this->document = new stdClass;
-        }
-        return $this->document;
-    }
-    
-    public function setDocument($document) {
-        if(!($document instanceof stdClass)) {
-            throw new InvalidArgumentException(
-                'Document must be an stdClass'
-            );
-        }
-        $this->document = $document;
         return $this;
     }
 }

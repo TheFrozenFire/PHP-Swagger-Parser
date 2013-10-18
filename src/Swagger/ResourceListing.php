@@ -6,9 +6,7 @@ use Swagger\ResourceListing\Api;
 use InvalidArgumentException;
 use stdClass;
 
-class ResourceListing {
-    protected $document;
-    
+class ResourceListing extends Document {
     public function __construct($document = null) {
         if(!is_null($document)) {
             $this->setDocument($document);
@@ -84,11 +82,11 @@ class ResourceListing {
     }
     
     public function getDocument() {
-        if(!is_object($this->document)) {
-            $this->document = new stdClass;
-            $this->document->apis = array();
+        $document = parent::getDocument();
+        if(!property_exists($document, 'apis')) {
+            $document->apis = array();
         }
-        return $this->document;
+        return $document;
     }
     
     public function setDocument($document) {
@@ -99,8 +97,7 @@ class ResourceListing {
                 'Document must be a JSON string or the object representation of json_decode'
             );
         }
-        $this->document = $document;
-        return $this;
+        return parent::setDocument($document);
     }
     
     protected static function apiFromDocument($document) {

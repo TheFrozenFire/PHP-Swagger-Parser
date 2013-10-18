@@ -1,12 +1,12 @@
 <?php
 namespace Swagger\ApiDeclaration\Api;
 
+use Swagger\Document;
 use Swagger\ApiDeclaration\Api\Operation\Parameter;
 use Swagger\ApiDeclaration\Api\Operation\ResponseMessage;
+use InvalidArgumentException;
 
-class Operation {
-    protected $document;
-    
+class Operation extends Document {
     public function getMethod() {
         if(!property_exists($this->getDocument(), 'method')) {
             return null;
@@ -120,23 +120,6 @@ class Operation {
         }
         
         $this->getDocument()->errorResponses = $errorResponses;
-        return $this;
-    }
-    
-    public function getDocument() {
-        if(!is_object($this->document)) {
-            $this->document = new stdClass;
-        }
-        return $this->document;
-    }
-    
-    public function setDocument($document) {
-        if(!($document instanceof stdClass)) {
-            throw new InvalidArgumentException(
-                'Document must be an stdClass'
-            );
-        }
-        $this->document = $document;
         return $this;
     }
     
