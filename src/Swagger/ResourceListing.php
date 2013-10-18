@@ -3,6 +3,7 @@ namespace Swagger;
 
 use Swagger\ResourceListing\Api;
 use Swagger\ResourceListing\Authorization;
+use Swagger\ResourceListing\Info;
 
 use InvalidArgumentException;
 use stdClass;
@@ -67,12 +68,11 @@ class ResourceListing extends Document {
     }
     
     public function getInfo() {
-        return $this->info;
+        return parent::getSubDocument('info', array(get_called_class(), 'infoFromDocument'));
     }
     
     public function setInfo($info) {
-        $this->info = $info;
-        return $this;
+        return parent::setSubDocument('info', $info, 'Swagger\ResourceListing\Info');
     }
     
     public function getDocument() {
@@ -100,5 +100,9 @@ class ResourceListing extends Document {
     
     public static function authorizationFromDocument($name, $document) {
         return new Authorization($document, $name);
+    }
+    
+    public static function infoFromDocument($document) {
+        return new Info($document);
     }
 }
