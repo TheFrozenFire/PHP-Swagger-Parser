@@ -57,6 +57,18 @@ class ResourceListing extends Document {
         return $this;
     }
     
+    public function getBasePath() {
+        if(!property_exists($this->getDocument(), 'basePath')) {
+            return null;
+        }
+        return $this->getDocument()->basePath;
+    }
+    
+    public function setBasePath($basePath) {
+        $this->getDocument()->basePath = $basePath;
+        return $this;
+    }
+    
     public function getApis() {
         if(!property_exists($this->getDocument(), 'apis')) {
             $this->getDocument()->apis = array();
@@ -68,18 +80,6 @@ class ResourceListing extends Document {
         }
         
         return $apis;
-    }
-    
-    public function getBasePath() {
-        if(!property_exists($this->getDocument(), 'basePath')) {
-            return null;
-        }
-        return $this->getDocument()->basePath;
-    }
-    
-    public function setBasePath($basePath) {
-        $this->getDocument()->basePath = $basePath;
-        return $this;
     }
     
     public function setApis($apis) {
