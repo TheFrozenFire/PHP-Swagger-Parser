@@ -12,26 +12,18 @@ class Api extends Document {
     }
     
     public function getPath() {
-        if(!property_exists($this->getDocument(), 'path')) {
-            return null;
-        }
-        return $this->getDocument()->path;
+        return parent::getDocumentProperty('path');
     }
     
     public function setPath($path) {
-        $this->getDocument()->path = $path;
-        return $this;
+        return parent::setDocumentProperty('path', $path);
     }
     
     public function getDescription() {
-        if(!property_exists($this->getDocument(), 'description')) {
-            return null;
-        }
-        return $this->getDocument()->description;
+        return parent::getDocumentProperty('description');
     }
     
     public function setDescription($description) {
-        $this->getDocument()->description = $description;
-        return $this;
+        return parent::setDocumentProperty('description', $description);
     }
 }

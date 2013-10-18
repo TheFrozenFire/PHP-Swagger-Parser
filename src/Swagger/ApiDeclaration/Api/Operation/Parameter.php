@@ -6,110 +6,74 @@ use InvalidArgumentException;
 
 class Parameter extends Document {
     public function getParamType() {
-        if(!property_exists($this->getDocument(), 'paramType')) {
-            return null;
-        }
-        return $this->getDocument()->paramType;
+        return parent::getDocumentProperty('paramType');
     }
     
     public function setParamType($paramType) {
-        $this->getDocument()->paramType = $paramType;
-        return $this;
+        return parent::setDocumentProperty('paramType', $paramType);
     }
     
     public function getName() {
-        if(!property_exists($this->getDocument(), 'name')) {
-            return null;
-        }
-        return $this->getDocument()->name;
+        return parent::getDocumentProperty('name');
     }
     
     public function setName($name) {
-        $this->getDocument()->name = $name;
-        return $this;
+        return parent::setDocumentProperty('name', $name);
     }
     
     public function getDescription() {
-        if(!property_exists($this->getDocument(), 'description')) {
-            return null;
-        }
-        return $this->getDocument()->description;
+        return parent::getDocumentProperty('description');
     }
     
     public function setDescription($description) {
-        $this->getDocument()->description = $description;
-        return $this;
+        return parent::setDocumentProperty('description', $description);
     }
     
     public function getDataType() {
-        if(!property_exists($this->getDocument(), 'dataType')) {
-            return null;
-        }
-        return $this->getDocument()->dataType;
+        return parent::getDocumentProperty('dataType');
     }
     
     public function setDataType($dataType) {
-        $this->getDocument()->dataType = $dataType;
-        return $this;
+        return parent::setDocumentProperty('dataType', $dataType);
     }
     
     public function getFormat() {
-        if(!property_exists($this->getDocument(), 'format')) {
-            return null;
-        }
-        return $this->getDocument()->format;
+        return parent::getDocumentProperty('format');
     }
     
     public function setFormat($format) {
-        $this->getDocument()->format = $format;
-        return $this;
+        return parent::setDocumentProperty('format', $format);
     }
     
     public function getRequired() {
-        if(!property_exists($this->getDocument(), 'required')) {
-            return null;
-        }
-        return $this->getDocument()->required;
+        return parent::getDocumentProperty('required');
     }
     
     public function setRequired($required) {
-        $this->getDocument()->required = $required;
-        return $this;
+        return parent::setDocumentProperty('required', $required);
     }
     
     public function getMinimum() {
-        if(!property_exists($this->getDocument(), 'minimum')) {
-            return null;
-        }
-        return $this->getDocument()->minimum;
+        return parent::getDocumentProperty('minimum');
     }
     
     public function setMinimum($minimum) {
-        $this->getDocument()->minimum = $minimum;
-        return $this;
+        return parent::setDocumentProperty('minimum', $minimum);
     }
     
     public function getMaximum() {
-        if(!property_exists($this->getDocument(), 'maximum')) {
-            return null;
-        }
-        return $this->getDocument()->maximum;
+        return parent::getDocumentProperty('maximum');
     }
     
     public function setMaximum($maximum) {
-        $this->getDocument()->maximum = $maximum;
-        return $this;
+        return parent::setDocumentProperty('maximum', $maximum);
     }
     
     public function getEnum() {
-        if(!property_exists($this->getDocument(), 'enum')) {
-            return null;
-        }
-        return $this->getDocument()->enum;
+        return parent::getDocumentProperty('enum');
     }
     
     public function setEnum($enum) {
-        $this->getDocument()->enum = $enum;
-        return $this;
+        return parent::setDocumentProperty('enum', $enum);
     }
 }

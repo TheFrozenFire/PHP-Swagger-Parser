@@ -8,126 +8,66 @@ use InvalidArgumentException;
 
 class Operation extends Document {
     public function getMethod() {
-        if(!property_exists($this->getDocument(), 'method')) {
-            return null;
-        }
-        return $this->getDocument()->method;
+        return parent::getDocumentProperty('method');
     }
     
     public function setMethod($method) {
-        $this->getDocument()->method = $method;
-        return $this;
+        return parent::setDocumentProperty('method', $method);
     }
     
     public function getNickname() {
-        if(!property_exists($this->getDocument(), 'nickname')) {
-            return null;
-        }
-        return $this->getDocument()->nickname;
+        return parent::getDocumentProperty('nickname');
     }
     
     public function setNickname($nickname) {
-        $this->getDocument()->nickname = $nickname;
-        return $this;
+        return parent::setDocumentProperty('nickname', $nickname);
     }
     
     public function getType() {
-        if(!property_exists($this->getDocument(), 'type')) {
-            return null;
-        }
-        return $this->getDocument()->type;
+        return parent::getDocumentProperty('type');
     }
     
     public function setType($type) {
-        $this->getDocument()->type = $type;
-        return $this;
+        return parent::setDocumentProperty('type', $type);
     }
     
     public function getParameters() {
-        if(!property_exists($this->getDocument(), 'parameters')) {
-            $this->getDocument()->parameters = array();
-        }
-        
-        $parameters = array();
-        foreach($this->getDocument()->parameters as $parameter) {
-            $parameters[] = static::parameterFromDocument($document);
-        }
-        
-        return $parameters;
+        return parent::getSubDocuments('parameters', array(get_called_class(), 'parameterFromDocument'));
     }
     
     public function setParameters($parameters) {
-        if(!is_array($parameters)) {
-            throw new InvalidArgumentException('Parameter must be of type array');
-        }
-        
-        foreach($parameters as $key => $parameter) {
-            if($parameter instanceof Parameter) {
-                $parameters[$key] = $parameter->getDocument();
-            }
-        }
-        
-        $this->getDocument()->parameters = $parameters;
-        return $this;
+        return parent::setSubDocuments('parameters', $parameters, 'Swagger\ApiDeclaration\Api\Operation\Parameter');
     }
     
     public function getSummary() {
-        if(!property_exists($this->getDocument(), 'summary')) {
-            return null;
-        }
-        return $this->getDocument()->summary;
+        return parent::getDocumentProperty('summary');
     }
     
     public function setSummary($summary) {
-        $this->getDocument()->summary = $summary;
-        return $this;
+        return parent::setDocumentProperty('summary', $summary);
     }
     
     public function getNotes() {
-        if(!property_exists($this->getDocument(), 'notes')) {
-            return null;
-        }
-        return $this->getDocument()->notes;
+        return parent::getDocumentProperty('notes');
     }
     
     public function setNotes($notes) {
-        $this->getDocument()->notes = $notes;
-        return $this;
+        return parent::setDocumentProperty('notes', $notes);
     }
     
     public function getErrorResponses() {
-        if(!property_exists($this->getDocument(), 'errorResponses')) {
-            $this->getDocument()->errorResponses = array();
-        }
-        
-        $errorResponses = array();
-        foreach($this->getDocument()->errorResponses as $errorResponse) {
-            $errorResponses[] = static::ResponseMessageFromDocument($document);
-        }
-        
-        return $errorResponses;
+        return parent::getSubDocuments('errorResponses', array(get_called_class(), 'responseMessageFromDocument'));
     }
     
     public function setErrorResponses($errorResponses) {
-        if(!is_array($errorResponses)) {
-            throw new InvalidArgumentException('Parameter must be of type array');
-        }
-        
-        foreach($errorResponses as $key => $errorResponse) {
-            if($errorResponse instanceof ResponseMessage) {
-                $errorResponses[$key] = $errorResponse->getDocument();
-            }
-        }
-        
-        $this->getDocument()->errorResponses = $errorResponses;
-        return $this;
+        return parent::setSubDocuments('errorResponses', $errorResponses, 'Swagger\ApiDeclaration\Api\Operation\ResponseMessage');
     }
     
-    protected static function parameterFromDocument($document) {
+    public static function parameterFromDocument($document) {
         return new Parameter($document);
     }
     
-    protected static function responseMessageFromDocument($document) {
+    public static function responseMessageFromDocument($document) {
         return new ResponseMessage($document);
     }
 }

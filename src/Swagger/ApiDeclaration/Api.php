@@ -8,30 +8,14 @@ use InvalidArgumentException;
 
 class Api extends ResourceListingApi {
     public function getOperations() {
-        if(!property_exists($this->getDocument(), 'operations')) {
-            $this->getDocument()->operations = array();
-        }
-        
-        $operations = array();
-        foreach($this->getDocument()->operations as $document) {
-            $operations[] = static::operationFromDocument($document);
-        }
-        
-        return $operations;
+        return parent::getSubDocuments('operations', array(get_called_class(), 'operationFromDocument'));
     }
     
     public function setOperations($operations) {
-        if(!is_array($operations)) {
-            throw new InvalidArgumentException('Parameter must be of type array');
-        }
-        
-        foreach($operations as $key => $operation) {
-            if($operation instanceof Operation) {
-                $operations[$key] = $operation->getDocument();
-            }
-        }
-        
-        $this->getDocument()->operations = $operations;
-        return $this;
+        return parent::setSubDocuments('operations', $operations, 'Swagger\ApiDeclaration\Api\Operation');
+    }
+    
+    public static function operationFromDocument($document) {
+        return new Operation($document);
     }
 }

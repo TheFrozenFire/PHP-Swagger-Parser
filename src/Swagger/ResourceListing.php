@@ -2,6 +2,7 @@
 namespace Swagger;
 
 use Swagger\ResourceListing\Api;
+use Swagger\ResourceListing\Authorization;
 
 use InvalidArgumentException;
 use stdClass;
@@ -18,82 +19,59 @@ class ResourceListing extends Document {
     }
     
     public function getApiVersion() {
-        if(!property_exists($this->getDocument(), 'apiVersion')) {
-            return null;
-        }
-        
-        return $this->getDocument()->apiVersion;
+        return parent::getDocumentProperty('apiVersion');
     }
     
     public function setApiVersion($apiVersion) {
-        $this->getDocument()->apiVersion = $apiVersion;
-        
-        return $this;
+        return parent::setDocumentProperty('apiVersion', $apiVersion);
     }
     
     public function getSwaggerVersion() {
-        if(!property_exists($this->getDocument(), 'swaggerVersion')) {
-            return null;
-        }
-        
-        return $this->getDocument()->swaggerVersion;
+        return parent::getDocumentProperty('swaggerVersion');
     }
     
     public function setSwaggerVersion($swaggerVersion) {
-        $this->getDocument()->swaggerVersion = $swaggerVersion;
-        return $this;
+        return parent::setDocumentProperty('swaggerVersion', $swaggerVersion);
     }
     
     public function getDescription() {
-        if(!property_exists($this->getDocument(), 'description')) {
-            return null;
-        }
-        
-        return $this->getDocument()->description;
+        return parent::getDocumentProperty('description');
     }
     
     public function setDescription($description) {
-        $this->getDocument()->description = $description;
-        return $this;
+        return parent::setDocumentProperty('description', $description);
     }
     
     public function getBasePath() {
-        if(!property_exists($this->getDocument(), 'basePath')) {
-            return null;
-        }
-        return $this->getDocument()->basePath;
+        return parent::getDocumentProperty('basePath');
     }
     
     public function setBasePath($basePath) {
-        $this->getDocument()->basePath = $basePath;
-        return $this;
+        return parent::setDocumentProperty('basePath', $basePath);
     }
     
     public function getApis() {
-        if(!property_exists($this->getDocument(), 'apis')) {
-            $this->getDocument()->apis = array();
-        }
-        
-        $apis = array();
-        foreach($this->getDocument()->apis as $document) {
-            $apis[] = static::apiFromDocument($document);
-        }
-        
-        return $apis;
+        return parent::getSubDocuments('apis', array(get_called_class(), 'apiFromDocument'));
     }
     
     public function setApis($apis) {
-        if(!is_array($apis)) {
-            throw new InvalidArgumentException('Parameter must be of type array');
-        }
-        
-        foreach($apis as $key => $api) {
-            if($api instanceof Api) {
-                $apis[$key] = $api->getDocument();
-            }
-        }
-        
-        $this->getDocument()->apis = $apis;
+        return parent::setSubDocuments('apis', $apis, 'Swagger\ResourceListing\Api');
+    }
+    
+    public function getAuthorizations() {
+        return parent::getSubDocuments('authorizations', array(get_called_class(), 'authorizationFromDocument'), true);
+    }
+    
+    public function setAuthorizations($authorizations) {
+        return parent::setSubDocuments('authorizations', $authorizations, 'Swagger\ResourceListing\Api');
+    }
+    
+    public function getInfo() {
+        return $this->info;
+    }
+    
+    public function setInfo($info) {
+        $this->info = $info;
         return $this;
     }
     
@@ -116,7 +94,11 @@ class ResourceListing extends Document {
         return parent::setDocument($document);
     }
     
-    protected static function apiFromDocument($document) {
+    public static function apiFromDocument($document) {
         return new Api($document);
+    }
+    
+    public static function authorizationFromDocument($name, $document) {
+        return new Authorization($document, $name);
     }
 }

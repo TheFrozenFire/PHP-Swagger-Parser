@@ -23,46 +23,22 @@ class Model extends Document {
     }
 
     public function getId() {
-        if(!property_exists($this->getDocument(), 'id')) {
-            return null;
-        }
-        return $this->getDocument()->id;
+        return parent::getDocumentProperty('id');
     }
     
     public function setId($id) {
-        $this->getDocument()->id = $id;
-        return $this;
+        return parent::setDocumentProperty('id', $id);
     }
     
     public function getProperties() {
-        if(!property_exists($this->getDocument(), 'properties')) {
-            $this->getDocument()->properties = array();
-        }
-        
-        $properties = array();
-        foreach($this->getDocument()->properties as $name => $property) {
-            $properties[] = static::propertyFromDocument($name, $document);
-        }
-        
-        return $properties;
+        return parent::getSubDocuments('properties', array(get_called_class(), 'propertyFromDocument'), true);
     }
     
     public function setProperties($properties) {
-        if(!is_array($properties)) {
-            throw new InvalidArgumentException('Parameter must be of type array');
-        }
-        
-        foreach($properties as $key => $property) {
-            if($property instanceof Property) {
-                $properties[$property->getName()] = $property->getDocument();
-            }
-        }
-        
-        $this->getDocument()->properties = $properties;
-        return $this;
+        return parent::setSubDocuments('properties', $properties, 'Swagger\ApiDeclaration\Model\Property');
     }
     
-    protected static function propertyFromDocument($name, $document) {
+    public static function propertyFromDocument($name, $document) {
         return new Property($document, $name);
     }
 }

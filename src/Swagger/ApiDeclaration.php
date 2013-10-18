@@ -6,50 +6,22 @@ use InvalidArgumentException;
 
 class ApiDeclaration extends ResourceListing {    
     public function getResourcePath() {
-        if(!property_exists($this->getDocument(), 'resourcePath')) {
-            return null;
-        }
-        return $this->getDocument()->resourcePath;
+        return parent::getDocumentProperty('resourcePath');
     }
     
     public function setResourcePath($resourcePath) {
-        $this->getDocument()->resourcePath = $resourcePath;
-        return $this;
+        return parent::setDocumentProperty('resourcePath', $resourcePath);
     }
     
     public function getModels() {
-        if(!property_exists($this->getDocument(), 'models')) {
-            $this->getDocument()->models = array();
-        }
-        
-        $models = array();
-        foreach($this->getDocument()->models as $name => $document) {
-            $models[$name] = static::modelFromDocument($name, $document);
-        }
-        
-        return $models;
+        return parent::getSubDocuments('models', array(get_called_class(), 'modelFromDocument'), true);
     }
     
     public function setModels($models) {
-        if(!is_array($models)) {
-            throw new InvalidArgumentException('Parameter must be of type array');
-        }
-        
-        foreach($models as $model) {
-            if($model instanceof Model) {
-                $models[$model->getName()] = $model->getDocument();
-            }
-        }
-        
-        $this->getDocument()->models = $models;
-        return $this;
+        return parent::setSubDocuments('models', $models, 'Swagger\ApiDeclaration\Model');
     }
     
-    protected static function apiFromDocument($document) {
-        return new Api($document);
-    }
-    
-    protected static function modelFromDocument($name, $document) {
+    public static function modelFromDocument($name, $document) {
         return new Model($document, $name);
     }
 }

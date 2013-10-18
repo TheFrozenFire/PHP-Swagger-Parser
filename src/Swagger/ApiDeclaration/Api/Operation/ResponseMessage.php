@@ -6,38 +6,26 @@ use InvalidArgumentException;
 
 class ResponseMessage extends Document {
     public function getCode() {
-        if(!property_exists($this->getDocument(), 'code')) {
-            return null;
-        }
-        return $this->getDocument()->code;
+        return parent::getDocumentProperty('code');
     }
     
     public function setCode($code) {
-        $this->getDocument()->code = $code;
-        return $this;
+        return parent::setDocumentProperty('code', $code);
     }
     
     public function getMessage() {
-        if(!property_exists($this->getDocument(), 'message')) {
-            return null;
-        }
-        return $this->getDocument()->message;
+        return parent::getDocumentProperty('message');
     }
     
     public function setMessage($message) {
-        $this->getDocument()->message = $message;
-        return $this;
+        return parent::setDocumentProperty('message', $message);
     }
     
     public function getResponseModel() {
-        if(!property_exists($this->getDocument(), 'responseModel')) {
-            return null;
-        }
-        return $this->getDocument()->responseModel;
+        return parent::getDocumentProperty('responseModel');
     }
     
     public function setResponseModel($responseModel) {
-        $this->getDocument()->responseModel = $responseModel;
-        return $this;
+        return parent::setDocumentProperty('responseModel', $responseModel);
     }
 }

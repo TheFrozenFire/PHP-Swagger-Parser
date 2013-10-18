@@ -22,50 +22,34 @@ class Property extends Document {
     }
     
     public function getType() {
-        if(!property_exists($this->getDocument(), 'type')) {
-            return null;
-        }
-        return $this->getDocument()->type;
+        return parent::getDocumentProperty('type');
     }
     
     public function setType($type) {
-        $this->getDocument()->type = $type;
-        return $this;
+        return parent::setDocumentProperty('type', $type);
     }
     
     public function getFormat() {
-        if(!property_exists($this->getDocument(), 'format')) {
-            return null;
-        }
-        return $this->getDocument()->format;
+        return parent::getDocumentProperty('format');
     }
     
     public function setFormat($format) {
-        $this->getDocument()->format = $format;
-        return $this;
+        return parent::setDocumentProperty('format', $format);
     }
     
     public function getDescription() {
-        if(!property_exists($this->getDocument(), 'description')) {
-            return null;
-        }
-        return $this->getDocument()->description;
+        return parent::getDocumentProperty('description');
     }
     
     public function setDescription($description) {
-        $this->getDocument()->description = $description;
-        return $this;
+        return parent::setDocumentProperty('description', $description);
     }
     
     public function getEnum() {
-        if(!property_exists($this->getDocument(), 'enum')) {
-            return null;
-        }
-        return $this->getDocument()->enum;
+        return parent::getDocumentProperty('enum');
     }
     
     public function setEnum($enum) {
-        $this->getDocument()->enum = $enum;
-        return $this;
+        return parent::setDocumentProperty('enum', $enum);
     }
 }
