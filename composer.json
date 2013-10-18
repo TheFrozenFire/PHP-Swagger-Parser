@@ -17,5 +17,8 @@
         "classmap": [
             "tests/"
         ]
+    },
+    "require-dev": {
+        "zendframework/zend-stdlib": "~2.2.3"
     }
 }

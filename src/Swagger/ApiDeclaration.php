@@ -4,19 +4,7 @@ namespace Swagger;
 use Swagger\ApiDeclaration\Api;
 use InvalidArgumentException;
 
-class ApiDeclaration extends ResourceListing {
-    public function getBasePath() {
-        if(!property_exists($this->getDocument(), 'basePath')) {
-            return null;
-        }
-        return $this->getDocument()->basePath;
-    }
-    
-    public function setBasePath($basePath) {
-        $this->getDocument()->basePath = $basePath;
-        return $this;
-    }
-    
+class ApiDeclaration extends ResourceListing {    
     public function getResourcePath() {
         if(!property_exists($this->getDocument(), 'resourcePath')) {
             return null;

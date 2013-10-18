@@ -13,6 +13,10 @@ class ResourceListing extends Document {
         }
     }
     
+    public function produceApiUri(Api $api) {
+        return $this->getBasePath().$api->getPath();
+    }
+    
     public function getApiVersion() {
         if(!property_exists($this->getDocument(), 'apiVersion')) {
             return null;
@@ -64,6 +68,18 @@ class ResourceListing extends Document {
         }
         
         return $apis;
+    }
+    
+    public function getBasePath() {
+        if(!property_exists($this->getDocument(), 'basePath')) {
+            return null;
+        }
+        return $this->getDocument()->basePath;
+    }
+    
+    public function setBasePath($basePath) {
+        $this->getDocument()->basePath = $basePath;
+        return $this;
     }
     
     public function setApis($apis) {
