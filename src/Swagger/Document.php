@@ -44,6 +44,9 @@ abstract class Document {
     
     public function getSubDocuments($name, $factory, $passIndex = false) {
         $documents = $this->getDocumentProperty($name);
+        if(is_object($documents)) {
+            $documents = $this->convertStdClassToAssociativeArray($documents);
+        }
         if(is_array($documents)) {
             foreach($documents as $key => $document) {
                 if($passIndex) {
@@ -89,5 +92,17 @@ abstract class Document {
         }
         $this->document = $document;
         return $this;
+    }
+
+    /**
+     * @param $documents
+     * @return array
+     */
+    protected function convertStdClassToAssociativeArray($documents) {
+        $return = array();
+        foreach (get_object_vars($documents) as $key => $document) {
+            $return[$key] = $document;
+        }
+        return $return;
     }
 }

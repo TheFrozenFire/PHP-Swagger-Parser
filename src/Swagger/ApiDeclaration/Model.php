@@ -10,7 +10,7 @@ class Model extends Document {
     
     public function __construct($document = null, $name) {
         $this->setName($name);
-        parent::__construct($name);
+        parent::__construct($document);
     }
     
     public function getName() {
