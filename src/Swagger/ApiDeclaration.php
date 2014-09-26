@@ -4,7 +4,12 @@ namespace Swagger;
 use Swagger\ApiDeclaration\Api;
 use InvalidArgumentException;
 
-class ApiDeclaration extends ResourceListing {    
+class ApiDeclaration extends ResourceListing {
+
+    public static function apiFromDocument($document) {
+        return new Api($document);
+    }
+    
     public function getResourcePath() {
         return parent::getDocumentProperty('resourcePath');
     }
