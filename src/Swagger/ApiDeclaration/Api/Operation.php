@@ -54,6 +54,14 @@ class Operation extends Document {
     public function setNotes($notes) {
         return parent::setDocumentProperty('notes', $notes);
     }
+
+    public function getDeprecated() {
+        return parent::getDocumentProperty('deprecated');
+    }
+
+    public function setDeprecated($deprecated) {
+        return parent::setDocumentProperty('deprecated', $deprecated);
+    }
     
     public function getErrorResponses() {
         return parent::getSubDocuments('errorResponses', array(get_called_class(), 'responseMessageFromDocument'));

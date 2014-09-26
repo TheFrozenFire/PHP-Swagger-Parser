@@ -29,7 +29,15 @@ class Model extends Document {
     public function setId($id) {
         return parent::setDocumentProperty('id', $id);
     }
-    
+
+    public function getDescription() {
+        return parent::getDocumentProperty('description');
+    }
+
+    public function setDescription($description) {
+        return parent::setDocumentProperty('description', $description);
+    }
+
     public function getProperties() {
         return parent::getSubDocuments('properties', array(get_called_class(), 'propertyFromDocument'), true);
     }
