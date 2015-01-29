@@ -3,6 +3,7 @@ namespace Swagger;
 
 use Swagger\ApiDeclaration\Api;
 use InvalidArgumentException;
+use Swagger\ApiDeclaration\Model;
 
 class ApiDeclaration extends ResourceListing {    
     public function getResourcePath() {

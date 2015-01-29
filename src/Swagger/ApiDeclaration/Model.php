@@ -1,5 +1,5 @@
 <?php
-namespace Swagger\ApiDeclaration\Model;
+namespace Swagger\ApiDeclaration;
 
 use Swagger\Document;
 use Swagger\ApiDeclaration\Model\Property;
