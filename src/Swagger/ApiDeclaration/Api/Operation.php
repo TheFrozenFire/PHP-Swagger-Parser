@@ -62,7 +62,15 @@ class Operation extends Document {
     public function setErrorResponses($errorResponses) {
         return parent::setSubDocuments('errorResponses', $errorResponses, 'Swagger\ApiDeclaration\Api\Operation\ResponseMessage');
     }
+
+    public function getResponseMessages() {
+        return parent::getSubDocuments('responseMessages', array(get_called_class(), 'responseMessageFromDocument'));
+    }
     
+    public function setResponseMessages($repsonseMessages) {
+        return parent::setSubDocuments('responseMessages', $repsonseMessages, 'Swagger\ApiDeclaration\Api\Operation\ResponseMessage');
+    }
+
     public static function parameterFromDocument($document) {
         return new Parameter($document);
     }
