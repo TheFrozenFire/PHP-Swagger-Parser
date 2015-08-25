@@ -76,4 +76,19 @@ class Parameter extends Document {
     public function setEnum($enum) {
         return parent::setDocumentProperty('enum', $enum);
     }
+
+    public function getDefaultValue() {
+        return parent::getDocumentProperty('defaultValue');
+    }
+
+    public function setDefaultValue($defaultValue) {
+        return parent::setDocumentProperty('defaultValue', $defaultValue);
+    }
+    public function getType() {
+        return parent::getDocumentProperty('type');
+    }
+
+    public function setType($type) {
+        return parent::setDocumentProperty('type', $type);
+    }
 }
