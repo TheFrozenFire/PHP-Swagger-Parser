@@ -4,6 +4,8 @@ namespace Swagger\Object;
 interface ObjectInterface
 {
     public function __construct($value);
-
-    public function getSwaggerObjectValue();
+    
+    public function getDocument();
+    
+    public function setDocument($document);
 }

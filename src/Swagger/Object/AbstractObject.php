@@ -4,14 +4,9 @@ namespace Swagger\Object;
 use InvalidArgumentException;
 use stdClass;
 
-use Zend\Stdlib\Hydrator\ClassMethods;
-use Zend\Stdlib\Hydrator\Filter;
-
 abstract class AbstractObject implements ObjectInterface
 {
     protected $document;
-    
-    protected $hydrator;    
     
     public function __construct($document = null) {
         if(!is_null($document)) {
@@ -35,33 +30,6 @@ abstract class AbstractObject implements ObjectInterface
         } else {
             return $this->setDocumentProperty("x-{$extension}", $value);
         }
-    }
-    
-    public function getSwaggerObjectValue()
-    {
-        $objectValue = new stdClass;
-        
-        $attributes = $this->getHydrator()
-            ->extract($this);
-        
-        foreach($attributes as $name => $value) {
-            if($value instanceof ObjectInterface) {
-                $value = $value->getSwaggerObjectValue();
-            }
-            
-            $objectValue->$name $value;
-        }
-        
-        return $objectValue;
-    }
-    
-    public function __set($name, $value)
-    {
-        $hydrator = $this->getHydrator();
-        $hydrator->hydrate(array(
-            $name => $value,
-            "{$name}s" => $value
-        ), $this);
     }
     
     public function getDocument() {
@@ -133,22 +101,5 @@ abstract class AbstractObject implements ObjectInterface
         }
         
         return $this->setDocumentProperty($name, $value);
-    }
-
-    public function getHydrator()
-    {
-        if (!$this->hydrator) {
-            $hydrator = new ClassMethods;
-            $hydrator->setUnderscoreSeparatedKeys(false);
-            $hydrator->addFilter('getHydrator', new Filter\MethodMatchFilter('getHydrator'), Filter\FilterComposite::CONDITION_AND);
-            $this->hydrator = $hydrator;
-        }
-        return $this->hydrator;
-    }
-    
-    public function setHydrator($hydrator)
-    {
-        $this->hydrator = $hydrator;
-        return $this;
     }
 }
