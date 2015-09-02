@@ -3,7 +3,7 @@ namespace Swagger;
 
 use Swagger\Object as SwaggerObject;
 
-class Swagger extends SwaggerObject\AbstractObject
+class Document extends SwaggerObject\AbstractObject
 {
     public function getSwagger()
     {

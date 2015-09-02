@@ -37,6 +37,24 @@ abstract class AbstractObject implements ObjectInterface
         }
     }
     
+    public function getSwaggerObjectValue()
+    {
+        $objectValue = new stdClass;
+        
+        $attributes = $this->getHydrator()
+            ->extract($this);
+        
+        foreach($attributes as $name => $value) {
+            if($value instanceof ObjectInterface) {
+                $value = $value->getSwaggerObjectValue();
+            }
+            
+            $objectValue->$name $value;
+        }
+        
+        return $objectValue;
+    }
+    
     public function __set($name, $value)
     {
         $hydrator = $this->getHydrator();
