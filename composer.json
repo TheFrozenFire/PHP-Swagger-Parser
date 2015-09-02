@@ -13,10 +13,7 @@
     "autoload": {
         "psr-0": {
             "Swagger": "src/"
-        },
-        "classmap": [
-            "tests/"
-        ]
+        }
     },
     "require-dev": {
         "zendframework/zend-stdlib": "~2.2.3"
