@@ -3,7 +3,7 @@ namespace Swagger;
 
 use Swagger\Object as SwaggerObject;
 
-class Swagger extends AbstractDocument
+class Swagger extends SwaggerObject\AbstractObject
 {
     public function getSwagger()
     {
@@ -129,7 +129,7 @@ class Swagger extends AbstractDocument
     
     public function getSecurity()
     {
-        return $this->getDocumentObjectProperty('security', SwaggerObject\Security::class);
+        return $this->getDocumentObjectProperty('security', SwaggerObject\SecurityDefinitions::class);
     }
     
     public function setSecurity($security)
@@ -155,23 +155,5 @@ class Swagger extends AbstractDocument
     public function setExternalDocs(SwaggerObject\ExternalDocs $externalDocs)
     {
         return $this->setDocumentObjectProperty('externalDocs', $externalDocs);
-    }
-    
-    public function getVendorExtension($extension, $class = null)
-    {
-        if(is_string($class)) {
-            return $this->getDocumentObjectProperty("x-{$extension}", $class);
-        } else {
-            return $this->getDocumentProperty("x-{$extension}");
-        }
-    }
-    
-    public function setVendorExtension($extension, $value)
-    {
-        if($value instanceof SwaggerObject\ObjectInterface || (is_array($value) && reset($value) instanceof SwaggerObject\ObjectInterface)) {
-            return $this->setDocumentObjectProperty("x-{$extension}", $value);
-        } else {
-            return $this->setDocumentProperty("x-{$extension}", $value);
-        }
     }
 }
