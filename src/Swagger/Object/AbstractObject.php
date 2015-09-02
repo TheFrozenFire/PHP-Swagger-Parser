@@ -74,16 +74,16 @@ abstract class AbstractObject implements ObjectInterface
                 if($allowsRef && property_exists($arrayValue, '$ref')) {
                     $newValue[] = new Reference($arrayValue);
                 } else {
-                    $newValue[] = new $objectClass($arrayValue);
+                    $newValue[] = new $swaggerObjectClass($arrayValue);
                 }
             }
             
             return $newValue;
         } else {
-            if($allowsRef && property_exists($arrayValue, '$ref')) {
+            if($allowsRef && $value instanceof stdClass && property_exists($value, '$ref')) {
                 return new Reference($value);
             } else {
-                return new $objectClass($value);
+                return new $swaggerObjectClass($value);
             }
         }
     }

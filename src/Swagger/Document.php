@@ -99,7 +99,7 @@ class Document extends SwaggerObject\AbstractObject
     
     public function getParameters()
     {
-        return $this->getDocumentObjectProperty('parameters', SwaggerObject\Parameters::class);
+        return $this->getDocumentObjectProperty('parameters', SwaggerObject\ParametersDefinitions::class);
     }
     
     public function setParameters(SwaggerObject\Parameters $parameters)

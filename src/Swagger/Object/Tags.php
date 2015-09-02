@@ -1,7 +1,7 @@
 <?php
 namespace Swagger\Object;
 
-class Tag extends AbstractObject
+class Tags extends AbstractObject
 {
     public function getName()
     {
