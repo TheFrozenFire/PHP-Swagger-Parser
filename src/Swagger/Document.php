@@ -34,6 +34,7 @@ class Document extends SwaggerObject\AbstractObject
                         if($operation instanceof SwaggerObject\Operation) {
                             $this->operationsById[$operation->getOperationId()] = [
                                 'path' => $pathItem,
+                                'method' => strtoupper(substr($operationMethod[1], 3)),
                                 'operation' => $operation,
                             ];
                         }
