@@ -1,7 +1,7 @@
 <?php
 namespace Swagger\Object;
 
-use InvalidArgumentException;
+use Swagger\Exception as SwaggerException;
 use stdClass;
 
 abstract class AbstractObject implements ObjectInterface
@@ -39,7 +39,7 @@ abstract class AbstractObject implements ObjectInterface
     
     public function setDocument($document) {
         if(!($document instanceof stdClass)) {
-            throw new InvalidArgumentException(
+            throw new \InvalidArgumentException(
                 'Document must be an stdClass'
             );
         }
@@ -49,7 +49,7 @@ abstract class AbstractObject implements ObjectInterface
     
     public function getDocumentProperty($name) {
         if(!property_exists($this->getDocument(), $name)) {
-            throw new \UnexpectedValueException("Property {$name} does not exist");
+            throw new SwaggerException\MissingDocumentPropertyException("Property {$name} does not exist");
         }
         
         return $this->getDocument()->$name;

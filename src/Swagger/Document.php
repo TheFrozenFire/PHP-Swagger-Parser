@@ -2,6 +2,7 @@
 namespace Swagger;
 
 use Swagger\Object as SwaggerObject;
+use Swagger\Exception as SwaggerException;
 
 class Document extends SwaggerObject\AbstractObject
 {
@@ -36,7 +37,7 @@ class Document extends SwaggerObject\AbstractObject
                                 'operation' => $operation,
                             ];
                         }
-                    } catch(\UnexpectedValueException $e) {
+                    } catch(SwaggerException\MissingDocumentPropertyException $e) {
                         // That's okay. Not every method is implemented.
                     }
                 }
