@@ -8,10 +8,8 @@ abstract class AbstractObject implements ObjectInterface
 {
     protected $document;
     
-    public function __construct($document = null) {
-        if(!is_null($document)) {
-            $this->setDocument($document);
-        }
+    public function __construct($document) {
+        $this->setDocument($document);
     }
     
     public function getVendorExtension($extension, $class = null)
@@ -51,7 +49,7 @@ abstract class AbstractObject implements ObjectInterface
     
     public function getDocumentProperty($name) {
         if(!property_exists($this->getDocument(), $name)) {
-            return null;
+            throw new \UnexpectedValueException("Property {$name} does not exist");
         }
         
         return $this->getDocument()->$name;

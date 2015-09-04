@@ -5,6 +5,58 @@ use Swagger\Object as SwaggerObject;
 
 class Document extends SwaggerObject\AbstractObject
 {
+    protected $operationsById = [];
+
+    public function getOperationsById($reset = false)
+    {
+        if($reset) {
+            $this->operationsById = [];
+        }
+        
+        if(empty($this->operationsById)) {
+            $paths = $this->getPaths();
+            foreach($paths->getAllPaths() as $path) {
+                $pathItem = $paths->getPath($path);
+                
+                foreach([
+                    [$pathItem, 'getGet'],
+                    [$pathItem, 'getPut'],
+                    [$pathItem, 'getPost'],
+                    [$pathItem, 'getDelete'],
+                    [$pathItem, 'getOptions'],
+                    [$pathItem, 'getHead'],
+                    [$pathItem, 'getPatch'],
+                ] as $operationMethod) {
+                    try {
+                        $operation = $operationMethod();
+                        
+                        if($operation instanceof SwaggerObject\Operation) {
+                            $this->operationsById[$operation->getOperationId()] = [
+                                'path' => $pathItem,
+                                'operation' => $operation,
+                            ];
+                        }
+                    } catch(\UnexpectedValueException $e) {
+                        // That's okay. Not every method is implemented.
+                    }
+                }
+            }
+        }
+        
+        return $this->operationsById;
+    }
+    
+    public function getOperationById($operationId, $reset = false)
+    {
+        $operations = $this->getOperationsById($reset);
+        
+        if(!isset($operations[$operationId])) {
+            throw new \UnexpectedValueException('Operation by the specified ID does not exist');
+        }
+        
+        return $operations[$operationId];
+    }
+
     public function getSwagger()
     {
         return $this->getDocumentProperty('swagger');
