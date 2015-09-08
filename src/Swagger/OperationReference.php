@@ -3,6 +3,8 @@ namespace Swagger;
 
 class OperationReference
 {
+    protected $operationId;
+
     protected $path;
     
     protected $pathItem;
@@ -12,19 +14,32 @@ class OperationReference
     protected $operation;
     
     public function __construct(
+        $operationId,
         $path,
         Object\PathItem $pathItem,
         $method,
         Object\Operation $operation
     )
     {
+        $this->setOperationId($operationId);
         $this->setPath($path);
         $this->setPathItem($pathItem);
         $this->setMethod($method);
         $this->setOperation($operation);
     }
     
-    protected function getPath()
+    public function getOperationId()
+    {
+        return $this->operationId;
+    }
+    
+    protected function setOperationId($operationId)
+    {
+        $this->operationId = $operationId;
+        return $this;
+    }
+    
+    public function getPath()
     {
         return $this->path;
     }
@@ -35,7 +50,7 @@ class OperationReference
         return $this;
     }
     
-    protected function getPathItem()
+    public function getPathItem()
     {
         return $this->pathItem;
     }
@@ -46,7 +61,7 @@ class OperationReference
         return $this;
     }
     
-    protected function getMethod()
+    public function getMethod()
     {
         return $this->method;
     }
@@ -57,7 +72,7 @@ class OperationReference
         return $this;
     }
     
-    protected function getOperation()
+    public function getOperation()
     {
         return $this->operation;
     }

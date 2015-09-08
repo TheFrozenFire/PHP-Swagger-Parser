@@ -6,6 +6,8 @@ use Swagger\Exception as SwaggerException;
 
 class Document extends SwaggerObject\AbstractObject
 {
+    protected $defaultScheme;
+
     protected $operationsById = [];
 
     public function getOperationsById($reset = false)
@@ -32,9 +34,10 @@ class Document extends SwaggerObject\AbstractObject
                         $operation = $operationMethod();
                         
                         if($operation instanceof SwaggerObject\Operation) {
-                            $operationId = strtolower($operation->getOperationId());
+                            $operationKey = strtolower($operation->getOperationId());
                         
-                            $this->operationsById[$operationId] = new OperationReference(
+                            $this->operationsById[$operationKey] = new OperationReference(
+                                $operation->getOperationId(),
                                 $path,
                                 $pathItem,
                                 strtoupper(substr($operationMethod[1], 3)),
@@ -57,10 +60,30 @@ class Document extends SwaggerObject\AbstractObject
         $operationId = strtolower($operationId);
         
         if(!isset($operations[$operationId])) {
-            throw new \UnexpectedValueException('Operation by the specified ID does not exist');
+            throw new SwaggerException\InvalidOperationException('Operation by the specified ID does not exist');
         }
         
         return $operations[$operationId];
+    }
+    
+    public function getDefaultScheme()
+    {
+        if(!$this->defaultScheme) {
+            $schemes = $this->getSchemes();
+            $defaultScheme = reset($schemes);
+            
+            if($defaultScheme) {
+                $this->defaultScheme = $defaultScheme;
+            }
+        }
+    
+        return $this->defaultScheme;
+    }
+    
+    public function setDefaultScheme($defaultScheme)
+    {
+        $this->defaultScheme = $defaultScheme;
+        return $this;
     }
 
     public function getSwagger()
