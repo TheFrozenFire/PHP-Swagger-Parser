@@ -32,11 +32,14 @@ class Document extends SwaggerObject\AbstractObject
                         $operation = $operationMethod();
                         
                         if($operation instanceof SwaggerObject\Operation) {
-                            $this->operationsById[$operation->getOperationId()] = [
-                                'path' => $pathItem,
-                                'method' => strtoupper(substr($operationMethod[1], 3)),
-                                'operation' => $operation,
-                            ];
+                            $operationId = strtolower($operation->getOperationId());
+                        
+                            $this->operationsById[$operationId] = new OperationReference(
+                                $path,
+                                $pathItem,
+                                strtoupper(substr($operationMethod[1], 3)),
+                                $operation
+                            );
                         }
                     } catch(SwaggerException\MissingDocumentPropertyException $e) {
                         // That's okay. Not every method is implemented.
@@ -51,6 +54,7 @@ class Document extends SwaggerObject\AbstractObject
     public function getOperationById($operationId, $reset = false)
     {
         $operations = $this->getOperationsById($reset);
+        $operationId = strtolower($operationId);
         
         if(!isset($operations[$operationId])) {
             throw new \UnexpectedValueException('Operation by the specified ID does not exist');
