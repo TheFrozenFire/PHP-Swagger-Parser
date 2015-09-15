@@ -68,11 +68,11 @@ abstract class AbstractObject implements ObjectInterface
         if(is_array($value)) {
             $newValue = [];
             
-            foreach($value as $arrayValue) {
+            foreach($value as $key => $arrayValue) {
                 if($allowsRef && property_exists($arrayValue, '$ref')) {
-                    $newValue[] = new Reference($arrayValue);
+                    $newValue[$key] = new Reference($arrayValue);
                 } else {
-                    $newValue[] = new $swaggerObjectClass($arrayValue);
+                    $newValue[$key] = new $swaggerObjectClass($arrayValue);
                 }
             }
             
