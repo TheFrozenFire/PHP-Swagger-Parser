@@ -3,11 +3,11 @@ namespace Swagger\Object;
 
 class SecurityDefinitions extends AbstractObject
 {
-    public function getAllDefinitions()
+    use CollectionObjectTrait;
+    
+    public function getItem($key)
     {
-        $definitions = array_keys(get_object_vars($this->getDocument()));
-        
-        return $definition;
+        return $this->getDefinition($key);
     }
 
     public function getDefinition($name)

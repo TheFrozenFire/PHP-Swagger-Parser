@@ -3,6 +3,18 @@ namespace Swagger\Object;
 
 class Responses extends AbstractObject
 {
+    use CollectionObjectTrait;
+
+    public function getItem($key)
+    {
+        return $this->getHttpStatusCode($key);
+    }
+    
+    public function getIgnoredKeys()
+    {
+        return ['default'];
+    }
+    
     public function getDefault()
     {
         return $this->getDocumentObjectProperty('default', Response::class, true);

@@ -18,9 +18,7 @@ class Document extends SwaggerObject\AbstractObject
         
         if(empty($this->operationsById)) {
             $paths = $this->getPaths();
-            foreach($paths->getAllPaths() as $path) {
-                $pathItem = $paths->getPath($path);
-                
+            foreach($paths->getAll() as $path => $pathItem) {
                 foreach([
                     [$pathItem, 'getGet'],
                     [$pathItem, 'getPut'],
@@ -69,13 +67,12 @@ class Document extends SwaggerObject\AbstractObject
     public function getSecuritySchemeOfType($type)
     {
         $securityDefinitions = $this->getSecurityDefinitions();
-        $schemeNames = $securityDefinitions->getAllDefinitions();
-        $scheme = null;
+        $schemes = $securityDefinitions->getAll();
+        $schemeOfType = null;
         
-        foreach($schemeNames as $name) {
-            $scheme = $securityDefinitions->getDefinition($name);
-            
+        foreach($schemes as $name => $scheme) {
             if($scheme->getType() === $type) {
+                $schemeOfType = $scheme;
                 break;
             }
         }

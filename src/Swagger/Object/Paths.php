@@ -3,11 +3,11 @@ namespace Swagger\Object;
 
 class Paths extends AbstractObject
 {
-    public function getAllPaths()
+    use CollectionObjectTrait;
+
+    public function getItem($key)
     {
-        $paths = array_keys(get_object_vars($this->getDocument()));
-        
-        return $paths;
+        return $this->getPath($key);
     }
 
     public function getPath($path)
