@@ -3,6 +3,13 @@ namespace Swagger\Object;
 
 class SecurityScheme extends AbstractObject
 {
+    const TYPE_BASIC = 'basic';
+    const TYPE_APIKEY = 'apiKey';
+    const TYPE_OAUTH2 = 'oauth2';
+    
+    const IN_QUERY = 'query';
+    const IN_HEADER = 'header';
+
     public function getType()
     {
         return $this->getDocumentProperty('type');

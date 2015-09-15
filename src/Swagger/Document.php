@@ -66,6 +66,27 @@ class Document extends SwaggerObject\AbstractObject
         return $operations[$operationId];
     }
     
+    public function getSecuritySchemeOfType($type)
+    {
+        $securityDefinitions = $this->getSecurityDefinitions();
+        $schemeNames = $securityDefinitions->getAllDefinitions();
+        $scheme = null;
+        
+        foreach($schemeNames as $name) {
+            $scheme = $securityDefinitions->getDefinition($name);
+            
+            if($scheme->getType() === $type) {
+                break;
+            }
+        }
+        
+        if(empty($scheme)) {
+            throw new \DomainException("No security schemes of type '{$type}' are defined on this API");
+        }
+        
+        return $scheme;
+    }
+    
     public function getDefaultScheme()
     {
         if(!$this->defaultScheme) {
