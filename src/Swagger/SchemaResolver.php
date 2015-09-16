@@ -12,7 +12,7 @@ class SchemaResolver
         $this->setDocument($document);
     }
     
-    public function parseDataObject($type, $data)
+    public function parseDataObject($type, stdClass $data)
     {
         $dataObject = new DataObject($type);
         if(is_string($type)) {
@@ -98,33 +98,6 @@ class SchemaResolver
         $schemaName = substr($ref, strlen('#/definitions/'));
         
         return $this->findSchemaForType($schemaName);
-    }
-    
-    protected function validateProperty($name, $value, $strict)
-    {
-        $propertySchema = $this->getSchemaForProperty($name);
-        
-        if($strict) {
-            $expectedType = $propertySchema->getType();
-            $expectedFormat = $propertySchema->getFormat();
-            
-            // TODO: Actually implement validation. #YOLO
-        }
-        
-        return true;
-    }
-    
-    protected function convertChildren($name, &$value)
-    {
-        if(!($value instanceof stdClass)) {
-            return;
-        }
-    
-        $propertySchema = $this->getSchemaForProperty($name);
-        
-        foreach(array_keys(get_object_vars($value)) as $childKey) {
-            
-        }
     }
     
     protected function getDocument()
