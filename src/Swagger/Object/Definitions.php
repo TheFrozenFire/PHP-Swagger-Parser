@@ -12,7 +12,7 @@ class Definitions extends AbstractObject
 
     public function getDefinition($name)
     {
-        return $this->getDocumentObjectProperty($name, Schema::class);
+        return $this->getDocumentObjectProperty($name, Schema::class, false);
     }
     
     public function setDefinition($name, Schema $definition)

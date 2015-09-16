@@ -9,6 +9,8 @@ class Document extends SwaggerObject\AbstractObject
     protected $defaultScheme;
 
     protected $operationsById = [];
+    
+    protected $schemaResolver;
 
     public function getOperationsById($reset = false)
     {
@@ -84,6 +86,28 @@ class Document extends SwaggerObject\AbstractObject
         return $scheme;
     }
     
+    public function getSchemaForOperationResponse(
+        $operationId,
+        $statusCode
+    )
+    {
+        $operation = $this->getOperationById($operationId);
+        try {
+            $schema = $operation->getResponses()
+                ->getHttpStatusCode($statusCode);
+        } catch(SwaggerException\MissingDocumentPropertyException $e) {
+            // This status is not defined, but we can hope for an operation default
+            try {
+                $schema = $operation->getResponse()
+                    ->getDefault();
+            } catch(SwaggerException\MissingDocumentPropertyException $e) {
+                throw new \UnexpectedValueException("No schema can be found for operation '{$operationId}'");
+            }
+        }
+        
+        return $schema;
+    }
+    
     public function getDefaultScheme()
     {
         if(!$this->defaultScheme) {
@@ -101,6 +125,21 @@ class Document extends SwaggerObject\AbstractObject
     public function setDefaultScheme($defaultScheme)
     {
         $this->defaultScheme = $defaultScheme;
+        return $this;
+    }
+    
+    public function getSchemaResolver()
+    {
+        if(!$this->schemaResolver) {
+            $this->schemaResolver = new SchemaResolver($this);
+        }
+    
+        return $this->schemaResolver;
+    }
+    
+    public function setSchemaResolver($schemaResolver)
+    {
+        $this->schemaResolver = $schemaResolver;
         return $this;
     }
 
