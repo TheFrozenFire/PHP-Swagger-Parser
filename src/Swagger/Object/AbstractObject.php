@@ -49,7 +49,7 @@ abstract class AbstractObject implements ObjectInterface
     
     public function getDocumentProperty($name) {
         if(!property_exists($this->getDocument(), $name)) {
-            throw new SwaggerException\MissingDocumentPropertyException("Property {$name} does not exist");
+            throw new SwaggerException\MissingDocumentPropertyException("Property '{$name}' does not exist");
         }
         
         return $this->getDocument()->$name;

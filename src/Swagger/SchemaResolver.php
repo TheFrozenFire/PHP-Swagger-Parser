@@ -1,6 +1,8 @@
 <?php
 namespace Swagger;
 
+use Swagger\Exception as SwaggerException;
+
 class SchemaResolver
 {
     protected $document;
@@ -25,7 +27,11 @@ class SchemaResolver
         
         foreach(array_keys(get_object_vars($data)) as $propertyKey) {
             $propertyValue = $data->$propertyKey;
-            $propertySchema = $this->findSchemaForProperty($schema, $propertyKey, true);
+            try {
+                $propertySchema = $this->findSchemaForProperty($schema, $propertyKey, true);
+            } catch(SwaggerException\MissingDocumentPropertyException $e) {
+                throw new \UnexpectedValueException("Schema is not defined for '{$propertyKey}' on '{$schema->getType()}' schema");
+            }
             
             if($propertySchema instanceof Object\Items) {
                 $propertyValue = $this->parseDataArray($propertySchema, $propertyValue);
@@ -65,7 +71,7 @@ class SchemaResolver
         return $data;
     }
     
-    protected function findSchemaForType($type)
+    public function findSchemaForType($type)
     {
         $schema = $this->getDocument()
             ->getDefinitions()
@@ -74,7 +80,7 @@ class SchemaResolver
         return $schema;
     }
     
-    protected function findSchemaForProperty(Object\Schema $schema, $property, $resolve = true)
+    public function findSchemaForProperty(Object\Schema $schema, $property, $resolve = true)
     {
         $properties = $schema->getProperties();
         
@@ -87,7 +93,7 @@ class SchemaResolver
         return $propertySchema;
     }
     
-    protected function resolveReference(Object\ReferentialInterface $reference)
+    public function resolveReference(Object\ReferentialInterface $reference)
     {
         $ref = $reference->getRef();
     
