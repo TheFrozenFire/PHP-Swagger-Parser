@@ -1,0 +1,10 @@
+<phpunit bootstrap="vendor/autoload.php">
+    <testsuites>
+        <testsuite name="Api">
+            <file>tests/Swagger</file>
+        </testsuite>
+    </testsuites>
+    <php>
+        <env name="SWAGGER_JSON_URL" value="http://petstore.swagger.io/v2/swagger.json" />
+    </php>
+</phpunit>

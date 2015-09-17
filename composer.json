@@ -13,9 +13,13 @@
     "autoload": {
         "psr-0": {
             "Swagger": "src/"
-        }
+        },
+        "classmap": [
+            "tests/"
+        ]
     },
     "require-dev": {
-        "zendframework/zend-stdlib": "~2.2.3"
+        "phpunit/phpunit": "~3.7.22",
+        "satooshi/php-coveralls": "~0.6"
     }
 }
