@@ -1,7 +1,7 @@
 <phpunit bootstrap="vendor/autoload.php">
     <testsuites>
         <testsuite name="Api">
-            <file>tests/Swagger</file>
+            <directory>tests/Swagger</directory>
         </testsuite>
     </testsuites>
     <php>
