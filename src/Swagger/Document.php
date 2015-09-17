@@ -109,7 +109,7 @@ class Document extends SwaggerObject\AbstractObject
         $schema = $this->getSchemaResolver()
             ->resolveReference($response->getSchema());
         
-        return ;
+        return $schema;
     }
     
     public function getDefaultScheme()
