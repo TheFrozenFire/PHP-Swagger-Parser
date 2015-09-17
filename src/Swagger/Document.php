@@ -93,7 +93,8 @@ class Document extends SwaggerObject\AbstractObject
     {
         $operation = $this->getOperationById($operationId);
         try {
-            $schema = $operation->getResponses()
+            $schema = $operation->getOperation()
+                ->getResponses()
                 ->getHttpStatusCode($statusCode);
         } catch(SwaggerException\MissingDocumentPropertyException $e) {
             // This status is not defined, but we can hope for an operation default
