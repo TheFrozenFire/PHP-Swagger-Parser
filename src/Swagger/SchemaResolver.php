@@ -12,7 +12,7 @@ class SchemaResolver
         $this->setDocument($document);
     }
     
-    public function parseDataObject($type, stdClass $data)
+    public function parseDataObject($type, \stdClass $data)
     {
         $dataObject = new DataObject($type);
         if(is_string($type)) {
