@@ -59,9 +59,7 @@ class Document extends SwaggerObject\AbstractObject
         $operations = $this->getOperationsById($reset);
         $operationId = strtolower($operationId);
         
-        if(!isset($operations[$operationId])) {
-            throw new SwaggerException\InvalidOperationException('Operation by the specified ID does not exist');
-        }
+        SwaggerException\InvalidOperationException::assess($operations, $operationId);
         
         return $operations[$operationId];
     }

@@ -38,19 +38,14 @@ abstract class AbstractObject implements ObjectInterface
     }
     
     public function setDocument($document) {
-        if(!($document instanceof stdClass)) {
-            throw new \InvalidArgumentException(
-                'Document must be an stdClass'
-            );
-        }
+        SwaggerException\InvalidSourceDocumentException::assess($document);
+        
         $this->document = $document;
         return $this;
     }
     
     public function getDocumentProperty($name) {
-        if(!property_exists($this->getDocument(), $name)) {
-            throw new SwaggerException\MissingDocumentPropertyException("Property '{$name}' does not exist");
-        }
+        SwaggerException\MissingDocumentPropertyException::assess($this->getDocument(), $name);
         
         return $this->getDocument()->$name;
     }
