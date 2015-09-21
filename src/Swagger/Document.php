@@ -103,7 +103,7 @@ class Document extends SwaggerObject\AbstractObject
                     ->getResponses()
                     ->getDefault();
             } catch(SwaggerException\MissingDocumentPropertyException $e) {
-                throw new \UnexpectedValueException("No schema can be found for operation '{$operationId}'");
+                throw new \UnexpectedValueException("No schema can be found for operation '{$operationId}' with status code '{$statusCode}'");
             }
         }
         

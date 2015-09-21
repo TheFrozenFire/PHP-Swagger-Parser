@@ -53,7 +53,10 @@ class SchemaResolver
     protected function parseDataArray(Object\Items $schema, $data)
     {
         if($schema->getType() === 'array') {
-            $arrayItemSchema = $this->resolveReference($schema->getItems());
+            $arrayItemSchema = $schema->getItems();
+            if($arrayItemSchema instanceof ReferentialInterface) {
+                $arrayItemSchema = $this->resolveReference($arrayItemSchema);
+            }
             foreach($data as $key => $value) {
                 if($arrayItemSchema instanceof Object\Items) {
                     if($arrayItemSchema->getType() === 'array') {
