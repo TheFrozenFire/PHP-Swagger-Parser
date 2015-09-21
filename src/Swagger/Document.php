@@ -99,7 +99,8 @@ class Document extends SwaggerObject\AbstractObject
         } catch(SwaggerException\MissingDocumentPropertyException $e) {
             // This status is not defined, but we can hope for an operation default
             try {
-                $response = $operation->getResponse()
+                $response = $operation->getOperation()
+                    ->getResponses()
                     ->getDefault();
             } catch(SwaggerException\MissingDocumentPropertyException $e) {
                 throw new \UnexpectedValueException("No schema can be found for operation '{$operationId}'");
