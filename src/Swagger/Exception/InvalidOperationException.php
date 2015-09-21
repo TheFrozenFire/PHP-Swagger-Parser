@@ -1,7 +1,7 @@
 <?php
 namespace Swagger\Exception;
 
-class InvalidOperationException extends UnexpectedValueException
+class InvalidOperationException extends \UnexpectedValueException
 {
     protected $message = 'Operation by the specified ID does not exist';
     

@@ -30,7 +30,9 @@ class SchemaResolver
             try {
                 $propertySchema = $this->findSchemaForProperty($schema, $propertyKey, true);
             } catch(SwaggerException\MissingDocumentPropertyException $e) {
-                throw new \UnexpectedValueException("Schema is not defined for '{$propertyKey}' on '{$schema->getType()}' schema");
+                throw (new SwaggerException\UndefinedPropertySchemaException)
+                    ->setPropertyName($propertyKey)
+                    ->setSchema($schema);
             }
             
             if($propertySchema instanceof Object\Items) {

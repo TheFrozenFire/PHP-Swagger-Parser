@@ -9,7 +9,7 @@ class InvalidSourceDocumentException extends \InvalidArgumentException
 
     public static function assess($sourceDocument)
     {
-        if(!($sourceDocument instanceof stdClass)) {
+        if(!($sourceDocument instanceof \stdClass)) {
             throw (new static)
                 ->setSourceDocument($sourceDocument);
         }

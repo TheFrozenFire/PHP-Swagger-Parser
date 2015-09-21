@@ -77,11 +77,9 @@ class Document extends SwaggerObject\AbstractObject
             }
         }
         
-        if(empty($scheme)) {
-            throw new \DomainException("No security schemes of type '{$type}' are defined on this API");
-        }
+        SwaggerException\UndefinedSecuritySchemeException::assess($type, $schemeOfType);
         
-        return $scheme;
+        return $schemeOfType;
     }
     
     public function getSchemaForOperationResponse(
@@ -101,7 +99,9 @@ class Document extends SwaggerObject\AbstractObject
                     ->getResponses()
                     ->getDefault();
             } catch(SwaggerException\MissingDocumentPropertyException $e) {
-                throw new \UnexpectedValueException("No schema can be found for operation '{$operationId}' with status code '{$statusCode}'");
+                throw (new SwaggerException\UndefinedOperationResponseSchemaException)
+                    ->setOperationId($operationId)
+                    ->setStatusCode($statusCode);
             }
         }
         
