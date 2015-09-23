@@ -3,31 +3,19 @@ namespace Swagger\Exception;
 
 class UndefinedPropertySchemaException extends \UnexpectedValueException
 {
+    use AdditionalExceptionContextTrait;
+    
     protected $message = 'Schema is not defined for property of schema';
-    
-    protected $propertyName;
-    
-    protected $schema;
-    
-    public function getPropertyName()
-    {
-        return $this->propertyName;
-    }
     
     public function setPropertyName($propertyName)
     {
-        $this->propertyName = $propertyName;
+        $this->addAdditionalContext('Property Name', $propertyName, 'Requested property name');
         return $this;
-    }
-    
-    public function getSchema()
-    {
-        return $this->schema;
     }
     
     public function setSchema($schema)
     {
-        $this->schema = $schema;
+        $this->addAdditionalContext('Schema', $schema, 'Schema to retrieve property information from');
         return $this;
     }
 }

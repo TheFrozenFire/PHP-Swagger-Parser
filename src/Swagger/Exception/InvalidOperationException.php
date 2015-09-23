@@ -3,9 +3,9 @@ namespace Swagger\Exception;
 
 class InvalidOperationException extends \UnexpectedValueException
 {
-    protected $message = 'Operation by the specified ID does not exist';
+    use AdditionalExceptionContextTrait;
     
-    protected $operationId;
+    protected $message = 'Operation by the specified ID does not exist';
 
     public static function assess($operations, $operationId)
     {
@@ -15,14 +15,9 @@ class InvalidOperationException extends \UnexpectedValueException
         }
     }
     
-    public function getOperationId()
-    {
-        return $this->operationId;
-    }
-    
     public function setOperationId($operationId)
     {
-        $this->operationId = $operationId;
+        $this->addAdditionalContext('Operation ID', $operationId, 'Requested operation ID');
         return $this;
     }
 }

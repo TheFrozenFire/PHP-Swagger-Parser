@@ -3,9 +3,9 @@ namespace Swagger\Exception;
 
 class InvalidSourceDocumentException extends \InvalidArgumentException
 {
-    protected $message = 'Document must be an stdClass';
+    use AdditionalExceptionContextTrait;
     
-    protected $sourceDocument;
+    protected $message = 'Document must be an stdClass';
 
     public static function assess($sourceDocument)
     {
@@ -15,14 +15,9 @@ class InvalidSourceDocumentException extends \InvalidArgumentException
         }
     }
     
-    public function getSourceDocument()
-    {
-        return $this->sourceDocument;
-    }
-    
     public function setSourceDocument($sourceDocument)
     {
-        $this->sourceDocument = $sourceDocument;
+        $this->addAdditionalContext('Source Document', $sourceDocument, 'Provided source document');
         return $this;
     }
 }

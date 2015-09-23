@@ -3,9 +3,9 @@ namespace Swagger\Exception;
 
 class UndefinedSecuritySchemeException extends \DomainException
 {
-    protected $message = 'No security schemes of the specified type are defined on this API';
+    use AdditionalExceptionContextTrait;
     
-    protected $schemeType;
+    protected $message = 'No security schemes of the specified type are defined on this API';
     
     public static function assess($type, $scheme)
     {
@@ -15,14 +15,9 @@ class UndefinedSecuritySchemeException extends \DomainException
         }
     }
     
-    public function getSchemeType()
-    {
-        return $this->schemeType;
-    }
-    
     public function setSchemeType($schemeType)
     {
-        $this->schemeType = $schemeType;
+        $this->addAdditionalContext('Scheme Type', $schemeType, 'Requested security scheme type');
         return $this;
     }
 }

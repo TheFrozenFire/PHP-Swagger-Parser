@@ -3,9 +3,9 @@ namespace Swagger\Exception;
 
 class MissingDocumentPropertyException extends \UnexpectedValueException
 {
-    protected $message = 'Document property does not exist';
+    use AdditionalExceptionContextTrait;
 
-    protected $documentProperty;
+    protected $message = 'Document property does not exist';
 
     public static function assess($document, $name)
     {
@@ -15,14 +15,9 @@ class MissingDocumentPropertyException extends \UnexpectedValueException
         }
     }
     
-    public function getDocumentProperty()
-    {
-        return $this->documentProperty;
-    }
-    
     public function setDocumentProperty($documentProperty)
     {
-        $this->documentProperty = $documentProperty;
+        $this->addAdditionalContext('Document Property', $documentProperty, 'Requested property name');
         return $this;
     }
 }
