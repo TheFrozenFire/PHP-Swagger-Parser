@@ -56,6 +56,10 @@ abstract class AbstractObject implements ObjectInterface
         return $this;
     }
     
+    public function hasDocumentProperty($name) {
+        return property_exists($this->getDocument(), $name);
+    }
+    
     public function getDocumentObjectProperty($name, $swaggerObjectClass, $allowsRef = false)
     {
         $value = $this->getDocumentProperty($name);
