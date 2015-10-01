@@ -1,9 +1,9 @@
 <?php
 namespace Swagger\Object;
 
-class Header extends AbstractObject
+class Header extends AbstractObject implements TypeObjectInterface
 {
-    use ValueObjectTrait;
+    use TypeObjectTrait;
 
     public function getDescription()
     {

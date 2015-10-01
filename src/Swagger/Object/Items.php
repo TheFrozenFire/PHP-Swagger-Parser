@@ -1,8 +1,8 @@
 <?php
 namespace Swagger\Object;
 
-class Items extends AbstractObject
+class Items extends AbstractObject implements TypeObjectInterface, ReferentialInterface
 {
-    use ValueObjectTrait,
+    use TypeObjectTrait,
         ReferentialTrait;
 }

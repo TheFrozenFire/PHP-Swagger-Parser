@@ -1,9 +1,9 @@
 <?php
 namespace Swagger\Object;
 
-class Schema extends AbstractObject implements ReferentialInterface
+class Schema extends AbstractObject implements TypeObjectInterface, ReferentialInterface
 {
-    use ValueObjectTrait,
+    use TypeObjectTrait,
         ReferentialTrait;
     
     public function getDescription()
@@ -18,7 +18,7 @@ class Schema extends AbstractObject implements ReferentialInterface
     
     public function getAllOf()
     {
-        return $this->getDocumentProperty('allOf');
+        return $this->getDocumentProperty('allOf', Schema::class);
     }
     
     public function setAllOf($allOf)
@@ -38,7 +38,7 @@ class Schema extends AbstractObject implements ReferentialInterface
     
     public function getAdditionalProperties()
     {
-        return $this->getDocumentProperty('additionalProperties');
+        return $this->getDocumentProperty('additionalProperties', Schema::class);
     }
     
     public function setAdditionalProperties($additionalProperties)

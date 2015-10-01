@@ -1,7 +1,7 @@
 <?php
 namespace Swagger;
 
-class DataObject
+class SchemaObject
 {
     protected $type;
     
