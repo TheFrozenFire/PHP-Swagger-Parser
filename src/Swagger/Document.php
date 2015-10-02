@@ -6,8 +6,6 @@ use Swagger\Exception as SwaggerException;
 
 class Document extends SwaggerObject\AbstractObject
 {
-    protected $defaultScheme;
-
     protected $operationsById = [];
     
     protected $schemaResolver;
@@ -109,26 +107,6 @@ class Document extends SwaggerObject\AbstractObject
             ->resolveReference($response->getSchema());
         
         return $schema;
-    }
-    
-    public function getDefaultScheme()
-    {
-        if(!$this->defaultScheme) {
-            $schemes = $this->getSchemes();
-            $defaultScheme = reset($schemes);
-            
-            if($defaultScheme) {
-                $this->defaultScheme = $defaultScheme;
-            }
-        }
-    
-        return $this->defaultScheme;
-    }
-    
-    public function setDefaultScheme($defaultScheme)
-    {
-        $this->defaultScheme = $defaultScheme;
-        return $this;
     }
     
     public function getSchemaResolver()
