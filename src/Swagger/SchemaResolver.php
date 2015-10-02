@@ -7,9 +7,15 @@ class SchemaResolver
 {
     protected $document;
     
-    public function __construct(Document $document)
+    protected $relativeResolvers;
+    
+    public function __construct(
+        Document $document,
+        $relativeResolvers = []
+    )
     {
         $this->setDocument($document);
+        $this->setRelativeResolvers($relativeResolvers);
     }
     
     /**
@@ -27,6 +33,34 @@ class SchemaResolver
             return $this->parseSchemaObject($type, $data);
         } else {
             return $data;
+        }
+    }
+    
+    public function findTypeAtPointer(Json\Pointer $pointer)
+    {
+        switch($pointer->getSegment(0)) {
+            case 'paths':
+                return $this->getDocument()
+                    ->getPaths()
+                    ->getPath($pointer->getSegment(1));
+            case 'definitions':
+                return $this->getDocument()
+                    ->getDefinitions()
+                    ->getDefinition($pointer->getSegment(1));
+            case 'parameters':
+                return $this->getDocument()
+                    ->getParameters()
+                    ->getParameter($pointer->getSegment(1));
+            case 'responses':
+                return $this->getDocument()
+                    ->getResponses()
+                    ->getHttpStatusCode($pointer->getSegment(1));
+            case 'securityDefinitions':
+                return $this->getDocument()
+                    ->getSecurityDefinitions()
+                    ->getDefinition($pointer->getSegment(1));
+            default:
+                throw new \OutOfBoundsException('The specified type path is not supported');
         }
     }
     
@@ -78,15 +112,6 @@ class SchemaResolver
         }
         
         return $data;
-    }
-    
-    protected function findSchemaForType($type)
-    {
-        $schema = $this->getDocument()
-            ->getDefinitions()
-            ->getDefinition($type);
-        
-        return $schema;
     }
     
     protected function findSchemaForProperty(Object\Schema $schema, $property)
@@ -148,13 +173,19 @@ class SchemaResolver
     
         $ref = $reference->getRef();
     
-        if(substr($ref, 0, strlen('#/definitions/')) !== '#/definitions/') {
-            throw new \LogicException('Relative schemas are not yet supported');
+        if($reference->hasUri()) {
+            $uri = $reference->getUri()
+            if(!$this->hasRelativeResolver($uri)) {
+                throw (new SwaggerException\RelativeResolverUnavailableException)
+                    ->setUri($uri);
+            }
+            
+            $resolver = $this->getRelativeResolver($uri);
+        } else {
+            $resolver = $this;
         }
-    
-        $schemaName = substr($ref, strlen('#/definitions/'));
         
-        return $this->findSchemaForType($schemaName);
+        return $resolver->findTypeAtPointer($reference->getPointer());
     }
     
     protected function getDocument()
@@ -166,5 +197,21 @@ class SchemaResolver
     {
         $this->document = $document;
         return $this;
+    }
+    
+    protected function setRelativeResolvers($relativeResolvers)
+    {
+        $this->relativeResolvers = $relativeResolvers;
+        return $this;
+    }
+    
+    protected function hasRelativeResolver($path)
+    {
+        return !empty($this->relativeResolvers[$path]);
+    }
+    
+    protected function getRelativeResolver($path)
+    {
+        return $this->relativeResolvers[$path];
     }
 }
