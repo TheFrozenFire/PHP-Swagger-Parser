@@ -9,6 +9,12 @@ class SchemaResolver
     
     protected $relativeResolvers;
     
+    /**
+     * Construct a new schema resolver
+     *
+     * @param Document $document - The underlying schema document
+     * @param array $relativeResolvers - An array of relative resolvers or types
+     */
     public function __construct(
         Document $document,
         $relativeResolvers = []
@@ -181,6 +187,12 @@ class SchemaResolver
             }
             
             $resolver = $this->getRelativeResolver($uri);
+            
+            if($resolver instanceof Object\AbstractObject) {
+                return $resolver;
+            } elseif(!($resolver instanceof SchemaResolver)) {
+                throw new \UnexpectedValueException('Relative resolvers much be a SchemaResolver or a resolved type');
+            }
         } else {
             $resolver = $this;
         }
