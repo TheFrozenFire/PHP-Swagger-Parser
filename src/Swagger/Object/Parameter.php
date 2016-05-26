@@ -1,7 +1,7 @@
 <?php
 namespace Swagger\Object;
 
-abstract class Parameter extends AbstractObject
+class Parameter extends AbstractObject
 {
     public function getName()
     {
