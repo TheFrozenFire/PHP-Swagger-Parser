@@ -180,7 +180,7 @@ class SchemaResolver
         $ref = $reference->getRef();
     
         if($reference->hasUri()) {
-            $uri = $reference->getUri()
+            $uri = $reference->getUri();
             if(!$this->hasRelativeResolver($uri)) {
                 throw (new SwaggerException\RelativeResolverUnavailableException)
                     ->setUri($uri);
