@@ -70,6 +70,34 @@ class SchemaResolver
         }
     }
     
+    public function findSchemaForOperationResponse(Object\Operation $operation, $statusCode)
+    {
+        try {
+            $response = $operation->getResponses()
+                ->getHttpStatusCode($statusCode);
+        } catch(SwaggerException\MissingDocumentPropertyException $e) {
+            // This status is not defined, but we can hope for an operation default
+            try {
+                $response = $operation->getResponses()
+                    ->getDefault();
+            } catch(SwaggerException\MissingDocumentPropertyException $e) {
+                throw (new SwaggerException\UndefinedOperationResponseSchemaException)
+                    ->setOperationId($operation->getOperationId())
+                    ->setStatusCode($statusCode);
+            }
+        }
+        
+        try {
+            $responseSchema = $response->getSchema();
+        } catch(SwaggerException\MissingDocumentPropertyException $e) {
+            throw (new SwaggerException\UndefinedOperationResponseSchemaException)
+                ->setOperationId($operation->getOperationId())
+                ->setStatusCode($statusCode);
+        }
+        
+        return $this->resolveReference($responseSchema);
+    }
+    
     /**
      * Parse data into a SchemaObject as defined by a Schema
      *
