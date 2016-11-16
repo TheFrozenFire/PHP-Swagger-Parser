@@ -33,13 +33,49 @@ class SchemaResolver
      */
     public function parseType(Object\TypeObjectInterface $type, $data)
     {
-        if($type instanceof Object\Items) {
-            return $this->parseItemsObject($type, $data);
-        } elseif($type instanceof Object\Schema) {
-            return $this->parseSchemaObject($type, $data);
+        if($type instanceof Object\ReferentialInterface && $type->hasRef()) {
+            $objectType = $type->getRef();
+            $type = $this->resolveReference($type);
         } else {
-            return $data;
+            try {
+                $objectType = $type->getType();
+            } catch(SwaggerException\MissingDocumentPropertyException $e) {
+                $objectType = null;
+            }
         }
+        
+        if($objectType == 'array') {
+            $schemaObject = [];
+            
+            $arrayItemType = $type->getItems();
+            
+            foreach($data as $key => $value) {
+                $schemaObject[$key] = $this->parseType($arrayItemType, $value);
+            }
+        } elseif($type instanceof Object\Schema) {
+            $schemaObject = new SchemaObject($objectType);
+        
+            foreach(array_keys(get_object_vars($data)) as $propertyKey) {
+                try {
+                    $propertySchema = $this->findSchemaForProperty($type, $propertyKey);
+                } catch(SwaggerException\MissingDocumentPropertyException $e) {
+                    throw (new SwaggerException\UndefinedPropertySchemaException)
+                        ->setPropertyName($name)
+                        ->setSchema($type);
+                }
+            
+                $propertyValue = $this->parseType(
+                    $propertySchema,
+                    $data->$propertyKey
+                );
+                
+                $schemaObject->setProperty($propertyKey, $propertyValue);
+            }
+        } else {
+            $schemaObject = $data;
+        }
+        
+        return $schemaObject;
     }
     
     public function findTypeAtPointer(Json\Pointer $pointer)
@@ -66,7 +102,7 @@ class SchemaResolver
                     ->getSecurityDefinitions()
                     ->getDefinition($pointer->getSegment(1));
             default:
-                throw new \OutOfBoundsException('The specified type path is not supported');
+                throw new \OutOfBoundsException("The specified type path '{$pointer->getSegment(0)}' is not supported");
         }
     }
     
@@ -95,57 +131,7 @@ class SchemaResolver
                 ->setStatusCode($statusCode);
         }
         
-        return $this->resolveReference($responseSchema);
-    }
-    
-    /**
-     * Parse data into a SchemaObject as defined by a Schema
-     *
-     * @param Object\Schema $schema
-     * @param \stdClass $data
-     * @return SchemaObject
-     */
-    protected function parseSchemaObject(Object\Schema $schema, \stdClass $data)
-    {
-        $schemaObject = new SchemaObject($schema->getType());
-        
-        foreach(array_keys(get_object_vars($data)) as $propertyKey) {
-            try {
-                $propertySchema = $this->findSchemaForProperty($schema, $propertyKey);
-            } catch(SwaggerException\MissingDocumentPropertyException $e) {
-                throw (new SwaggerException\UndefinedPropertySchemaException)
-                    ->setPropertyName($name)
-                    ->setSchema($schema);
-            }
-        
-            $propertyValue = $this->parseType(
-                $propertySchema,
-                $data->$propertyKey
-            );
-            
-            $schemaObject->setProperty($propertyKey, $propertyValue);
-        }
-        
-        return $schemaObject;
-    }
-    
-    /**
-     * Parse an array as defined by an Items object
-     *
-     * @param Object\Items $items
-     * @param array $data
-     * @return array
-     */
-    protected function parseItemsObject(Object\Items $items, $data)
-    {
-        if($items->getType() == 'array') {
-            $arrayItems = $items->getItems();
-            foreach($data as $key => $value) {
-                $data[$key] = $this->parseItemsObject($arrayItems, $value);
-            }
-        }
-        
-        return $data;
+        return $responseSchema;
     }
     
     protected function findSchemaForProperty(Object\Schema $schema, $property)
@@ -160,8 +146,6 @@ class SchemaResolver
                 $propertySchema = $this->findPropertyInAdditionalProperties($schema, $property);
             }
         }
-        
-        $propertySchema = $this->resolveReference($propertySchema);
         
         return $propertySchema;
     }
@@ -207,8 +191,8 @@ class SchemaResolver
     
         $ref = $reference->getRef();
     
-        if($reference->hasUri()) {
-            $uri = $reference->getUri();
+        if($ref->hasUri()) {
+            $uri = $ref->getUri();
             if(!$this->hasRelativeResolver($uri)) {
                 throw (new SwaggerException\RelativeResolverUnavailableException)
                     ->setUri($uri);
@@ -225,7 +209,7 @@ class SchemaResolver
             $resolver = $this;
         }
         
-        return $resolver->findTypeAtPointer($reference->getPointer());
+        return $resolver->findTypeAtPointer($ref->getPointer());
     }
     
     protected function getDocument()

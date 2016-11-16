@@ -23,7 +23,7 @@ class Pointer
     public function getSegment($index)
     {
         if(empty($this->segments)) {
-            $this->segments = explode('/', $this->getSpecification());
+            $this->segments = explode('/', trim($this->getSpecification(), '/'));
         }
         
         if(!isset($this->segments[$index])) {
