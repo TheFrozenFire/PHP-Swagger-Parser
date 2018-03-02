@@ -8,6 +8,9 @@ cache:
   directories:
     - $HOME/.composer/cache
 
+before_install:
+   - composer validate
+
 install:
    - composer install
 
