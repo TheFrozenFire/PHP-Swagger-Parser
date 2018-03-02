@@ -1,5 +1,8 @@
 Swagger Parser
 ======
+
+[![Build Status](https://travis-ci.org/TheFrozenFire/PHP-Swagger-Parser.svg?branch=2.0)](https://travis-ci.org/TheFrozenFire/PHP-Swagger-Parser)
+
 Parse Swagger specification documents programmatically, and also parse data
 structures according to a specification.
 
