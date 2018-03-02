@@ -1,5 +1,6 @@
 {
     "name": "thefrozenfire/swagger",
+    "license": "MIT",
     "description": "Swagger parser for PHP",
     "authors": [
         {
